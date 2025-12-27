@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Pilla Sreebala Veera Venkata Satyanarayana" />
+    <title>Andhra Pradesh Smart City Portal</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="/static/smart-city.png">
+</head>
+<body>
+
+<h2>AP Smart Village Issue Reporting</h2>
+
+<form method="POST" action="/submit" enctype="multipart/form-data" onsubmit="return validatePhone()">
+    
+    <label><b>Name</b></label>
+    <input type="text" name="name" placeholder="Enter Your Full Name" required>
+    <br>
+    <label>Gender</label>
+    <select name="gender" required>
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+    </select>
+    <br>
+    <label>Date of Birth</label>
+    <input type="date" id="dob" name="dob" required onchange="calculateAge()">
+    <br>
+    <label>Age</label>
+    <input type="number" id="age" name="age" readonly>
+    <label>Phone Number</label>
+        <input type="text" name="phone" id="phone" placeholder="e.g. 9876543210" required>
+    <span id="phoneError" class="field-error">
+        Please enter a valid Indian phone number
+    </span>
+    <br>
+    
+    <label>Email</label>
+    <input type="email" name="email" placeholder="example@gmail.com" required>
+    <br>
+    
+    <label>Cities in Andhra Pradesh</label>
+    <select name="city" id="city" required onchange="updateAreas()">
+        <option value="">Select City</option>
+        <option>Visakhapatnam</option>
+        <option>Vijayawada</option>
+        <option>Guntur</option>
+        <option>Nellore</option>
+        <option>Kurnool</option>
+        <option>Kadapa</option>
+        <option>Rajahmundry</option>
+        <option>Kakinada</option>
+        <option>Tirupati</option>
+        <option>Anantapur</option>
+        <option>Eluru</option>
+        <option>Ongole</option>
+        <option>Srikakulam</option>
+        <option>Vizianagaram</option>
+        <option>Machilipatnam</option>
+        <option>Tenali</option>
+        <option>Proddatur</option>
+        <option>Chittoor</option>
+        <option>Madanapalle</option>
+        <option>Nandyal</option>
+        <option>Hindupur</option>
+        <option>Tadepalligudem</option>
+        <option>Adoni</option>
+        <option>Narasaraopet</option>
+        <option>Bhimavaram</option>
+        <option>Dharmavaram</option>
+        <option>Gudivada</option>
+        <option>Palakollu</option>
+        <option>Tadipatri</option>
+        <option>Puttur</option>
+        <option>Yemmiganur</option>
+    </select>
+    <br>
+    <label>Area</label>
+    <select name="area" id="area" required>
+        <option value="">Select Area</option>
+    </select>
+    <br>
+    <label>Street</label>
+    <input type="text" name="street" placeholder="Street Name" required>
+    <br>
+    <label>Pincode</label>
+    <input type="number" name="pincode" placeholder="e.g. 530001" required>
+    <br>
+    <label>Describe Issue</label>
+    <textarea name="issue" placeholder="" required></textarea>
+    <br>
+
+
+    <label>Upload Issue Image</label>
+    <input type="file" name="image" accept="image/*" required>
+    <br>
+    <button type="submit">Submit Issue</button>
+    
+    
+</form>
+
+    <script>
+        function calculateAge() {
+        let dob = document.getElementById("dob").value;
+        if (!dob) return;
+
+        let birthDate = new Date(dob);
+        let today = new Date();
+
+        let age = today.getFullYear() - birthDate.getFullYear();
+        let monthDiff = today.getMonth() - birthDate.getMonth();
+
+        if (monthDiff < 0 || 
+           (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        document.getElementById("age").value = age;
+        }
+    </script>
+
+    <script>
+    function validatePhone() {
+        const phoneInput = document.getElementById("phone");
+        const errorMsg = document.getElementById("phoneError");
+
+        const phone = phoneInput.value.trim();
+        const indianRegex = /^(?:\+91)?[6-9]\d{9}$/;
+
+        if (!indianRegex.test(phone)) {
+            errorMsg.style.display = "block";
+            phoneInput.style.border = "2px solid red";
+            return false; 
+        } else {
+            errorMsg.style.display = "none";
+            phoneInput.style.border = "2px solid green";
+            return true; 
+    }
+    }
+    </script>
+    <script>
+    function updateAreas() {
+        const city = document.getElementById("city").value;
+        const areaSelect = document.getElementById("area");
+
+        // Reset area dropdown
+        areaSelect.innerHTML = '<option value="">Select Area</option>';
+
+        // City-wise areas (ONLY examples, you can add more)
+        const areas = {
+            Kakinada: [
+                "Sarpavaram",
+                "Jagannaickpur",
+                "Bhanugudi",
+                "Ramanayyapeta",
+                "Turangi",
+                "Gandhinagar",
+                "Kirlampudi"
+            ],
+            Visakhapatnam: [
+                "Gajuwaka",
+                "Madhurawada",
+                "MVP Colony",
+                "Seethammadhara",
+                "Dwaraka Nagar"
+            ],
+            Vijayawada: [
+                "Benz Circle",
+                "Patamata",
+                "Auto Nagar",
+                "One Town",
+                "Gollapudi"
+            ],
+            Rajahmundry: [
+                "Danavaipeta",
+                "Alcot Gardens",
+                "Tilak Road",
+                "Bommuru"
+            ],
+            Tirupati: [
+                "Mangalam",
+                "Renigunta",
+                "Kapila Teertham",
+                "SV University Area"
+            ]
+        };
+
+        // Populate areas for selected city
+        if (areas[city]) {
+            areas[city].forEach(function(area) {
+                const option = document.createElement("option");
+                option.value = area;
+                option.textContent = area;
+                areaSelect.appendChild(option);
+            });
+        }
+        }
+    </script>
+<script>
+function validateMap() {
+    if (!document.getElementById("latitude").value) {
+        document.getElementById("mapError").style.display = "block";
+        return false;
+    }
+    document.getElementById("mapError").style.display = "none";
+    return true;
+}
+</script>
+
+
+</body>
+</html>
